@@ -105,7 +105,16 @@ void scheduler() {
     cleanRam();
 }
 
+void boot() {
+    char command[50];
+    strcpy(command, "rm -rf BackingStore");
+    system(command);
+    strcpy(command, "mkdir BackingStore");
+    system(command);
+}
+
 int main() {
+    boot();
     l = List_create();
     rq = createReadyQueue();
     shellUI(l);
