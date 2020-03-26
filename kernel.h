@@ -1,5 +1,5 @@
 #include "pcb.h"
-extern void myinit(char* filename);
+extern void myinit(FILE* p);
 extern void scheduler();
 
 typedef struct ReadyQueueNode {

@@ -6,3 +6,6 @@ set e 2
 print e
 set f 4
 print f
+set g 9
+print g
+

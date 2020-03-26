@@ -72,17 +72,12 @@ ReadyQueueNode* getNext() {
     return temp;
 }
 
-void myinit(char* filename) {
-    FILE *p = fopen(filename,"rt");
-    if (p == NULL){
-        printf("%s not found\n", filename);
-    } else {
-        int start = getNextAvailableIndex();
-        int end = 0;
-        addToRAM(p, &start, &end);
-        PCB* pcb = makePCB(start, end);
-        addToReady(pcb);
-    }
+void myinit(FILE* p) {
+    int start = getNextAvailableIndex();
+    int end = 0;
+    addToRAM(p, &start, &end);
+    PCB* pcb = makePCB(start, end);
+    addToReady(pcb);
 }
 
 void scheduler() {

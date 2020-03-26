@@ -1,2 +1,6 @@
 set y 20
 print y
+set a 3
+print a
+set b 6
+print b

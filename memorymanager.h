@@ -1,1 +1,1 @@
-extern int launcher(FILE* fptr1);
+extern int launcher(char* filename);

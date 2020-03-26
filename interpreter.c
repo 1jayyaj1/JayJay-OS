@@ -8,6 +8,39 @@
 
 void interpret(char* parsedInput, List *l);
 
+int countTotalPages(FILE *fp) {
+    int count = 0;
+    int numPages = 0;
+    char c;
+    for (c = getc(fp); c != EOF; c = getc(fp)) {
+        if (c == '\n'){
+            count = count + 1; 
+        }
+    }
+    numPages = count / 4;
+    if (count % 4 != 0) {
+        numPages += 1;
+    }
+    return numPages;
+}
+
+int launcher(char* filename) {
+    FILE* f1 = fopen(filename, "r");
+    char command[50];
+    char path[50];
+    int totalPages;
+    snprintf(command, sizeof(command), "cp %s ./BackingStore", strdup(filename));
+    system(command);
+    snprintf(path, sizeof(path), "./BackingStore/%s", strdup(filename));
+    FILE* f2 = fopen(path, "rt");
+    totalPages = countTotalPages(f1);
+    /printf("%d\n", totalPages);
+    fclose(f1);
+    myinit(f2);
+    return 0;
+}
+
+
 int getSize (char* str) {
     size_t num_tokens = 1;
     int flag = 0;
@@ -195,10 +228,10 @@ int exec(char** parsedInput, int num_tokens, List *l) {
                         return -1;
                     }
                 }
-                char command[50];
-                snprintf(command, sizeof(command), "cp %s ./BackingStore", strdup(parsedInput[i]));
-                system(command);
-                myinit(parsedInput[i]);
+                //snprintf(command, sizeof(command), "cp %s ./BackingStore", strdup(parsedInput[i]));
+                //system(command);
+                launcher(strdup(parsedInput[i]));
+                //(parsedInput[i]);
             }
         }
         scheduler();
