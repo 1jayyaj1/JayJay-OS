@@ -4,6 +4,7 @@
 #include "shellmemory.h"
 #include "kernel.h"
 #include "ram.h"
+#include "memorymanager.h"
 
 void interpret(char* parsedInput, List *l);
 
@@ -194,6 +195,9 @@ int exec(char** parsedInput, int num_tokens, List *l) {
                         return -1;
                     }
                 }
+                char command[50];
+                snprintf(command, sizeof(command), "cp %s ./BackingStore", strdup(parsedInput[i]));
+                system(command);
                 myinit(parsedInput[i]);
             }
         }
