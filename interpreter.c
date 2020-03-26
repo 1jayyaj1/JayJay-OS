@@ -34,7 +34,7 @@ int launcher(char* filename) {
     snprintf(path, sizeof(path), "./BackingStore/%s", strdup(filename));
     FILE* f2 = fopen(path, "rt");
     totalPages = countTotalPages(f1);
-    /printf("%d\n", totalPages);
+    //printf("%d\n", totalPages);
     fclose(f1);
     myinit(f2);
     return 0;
