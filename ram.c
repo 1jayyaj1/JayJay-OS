@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h> 
 
-char* ram[1000] = { NULL };
+char* ram[40] = { NULL };
 int nextAvailableIndex = 0;
 
 int getNextAvailableIndex() {
@@ -11,17 +11,17 @@ int getNextAvailableIndex() {
 
 void addToRAM(FILE* p, int* start, int* end) {
     int errCode = 0;
-    char line[1000];
+    char line[40];
     if (p==NULL){
         printf("Script not found\n");
     }
-    fgets(line,999,p);
+    fgets(line,39,p);
     while(!feof(p)) {
         ram[nextAvailableIndex] = strdup(line);
         if (errCode != 0) {
             fclose(p);
         }
-        fgets(line,999,p);
+        fgets(line,39,p);
         nextAvailableIndex++;
     }
     fclose(p);
@@ -33,7 +33,7 @@ char* getInstruction(int index){
 }
 
 void cleanRam() {
-    for (int i = 0; i < 1000; i++) {
+    for (int i = 0; i < 40; i++) {
         ram[i] = NULL;
     }
     nextAvailableIndex = 0;
