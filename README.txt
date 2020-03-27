@@ -4,8 +4,8 @@ ID: 260801368
 THIS ASSIGNMENT WAS BUILT USING: mimi.cs.mcgill.ca
 
 TO COMPILE AND RUN THE CODE:
-1) gcc -c shell.c interpreter.c shellmemory.c cpu.c kernel.c pcb.c ram.c
-2) gcc -o mykernel shell.o interpreter.o shellmemory.o cpu.o kernel.o pcb.o ram.o
+1) gcc -c shell.c interpreter.c shellmemory.c cpu.c kernel.c pcb.c ram.c memorymanager.c
+2) gcc -o mykernel shell.o interpreter.o shellmemory.o cpu.o kernel.o pcb.o ram.o memorymanager.o
 3) ./mykernel
 
 RULES:

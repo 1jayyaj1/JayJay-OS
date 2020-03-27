@@ -1,48 +1,40 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "memorymanager.h"
 #include "kernel.h"
 
-int launcher(char* filename) {
-    FILE* f1 = fopen(filename, "rt");
-    char command[50];
-    strcpy(command, "cd ./BackingStore");
-    system(command);
-    snprintf(command, sizeof(command), "touch %s", strdup(filename));
-    system(command);
-
-    FILE* f2 = fopen(filename, "rt");
-
-
-
-    char c; 
-  
-    if (f1 == NULL || f2 == NULL) 
-    { 
-        printf("Cannot open file %s \n", filename); 
-        exit(0); 
-    }
-
-    c = fgetc(f1); 
-    while (c != EOF) 
-    { 
-        fputc(c, f2); 
-        c = fgetc(f1); 
-    }
-    fclose(f1);
-    myinit(f2);
-    return 0; 
-}
-
-int countTotalPages(FILE *f) {
-    char c;
+int countTotalPages(FILE *fp) {
     int count = 0;
-    c = fgetc(f); 
-    while (c != EOF) {
-        if (strcmp(c, "\n") == 0) {
-            count += 1;
+    int numPages = 0;
+    char c;
+    for (c = getc(fp); c != EOF; c = getc(fp)) {
+        if (c == '\n'){
+            count = count + 1; 
         }
     }
-    return count;
+    numPages = count / 4;
+    if (count % 4 != 0) {
+        numPages += 1;
+    }
+    return numPages;
+}
+
+void loadPage(int pageNumber, FILE* f, int frameNumber) {
+
+}
+
+int launcher(char* filename) {
+    FILE* f1 = fopen(filename, "r");
+    char command[50];
+    char path[50];
+    int totalPages;
+    snprintf(command, sizeof(command), "cp %s ./BackingStore", strdup(filename));
+    system(command);
+    snprintf(path, sizeof(path), "./BackingStore/%s", strdup(filename));
+    FILE* f2 = fopen(path, "rt");
+    totalPages = countTotalPages(f1);
+    //printf("%d\n", totalPages);
+    fclose(f1);
+    myinit(f2);
+    return 0;
 }
