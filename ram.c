@@ -5,6 +5,18 @@
 char* ram[40] = { NULL };
 int nextAvailableIndex = 0;
 
+int isFrameFree(int frameNumber) {
+    if (ram[frameNumber * 4] == NULL) {
+        return 1;
+    } else {
+        return -1;
+    }
+}
+
+void setRamCell(int ramCell, char* fileLine) {
+    ram[ramCell] = fileLine;
+}
+
 int getNextAvailableIndex() {
     return nextAvailableIndex;
 }

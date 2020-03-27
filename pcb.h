@@ -2,13 +2,12 @@
 #define PCB_H
 typedef struct PCB {
     int PC;
-    int start;
-    int end;
+    int PC_page;
+    int PC_offset;
+    int pages_max;
+    int pageTable[10];
 } PCB;
 
-PCB* makePCB(int start, int end);
+PCB* makePCB(int pageNumber, int pageOffset, int totalPages);
 #endif
-
-extern void setPageTable(int pageNumber, int frameNumber);
-extern int doesExists(int frameNumber);
-extern void isAvailable(int pageNumber);
+extern int doesExists(int frameNumber, PCB *p);

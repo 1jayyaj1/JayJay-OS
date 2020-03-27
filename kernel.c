@@ -8,6 +8,7 @@
 #include "ram.h"
 #include "pcb.h"
 #include "cpu.h"
+#include "memorymanager.h"
 
 ReadyQueueNode *createReadyQueueNode() {
     ReadyQueueNode *rqn = malloc(sizeof(ReadyQueueNode));
@@ -72,39 +73,36 @@ ReadyQueueNode* getNext() {
     return temp;
 }
 
-void myinit(FILE* p) {
-    int start = getNextAvailableIndex();
-    int end = 0;
-    addToRAM(p, &start, &end);
-    PCB* pcb = makePCB(start, end);
+PCB* myinit(int totalPages) {
+    PCB* pcb = makePCB(0, 0, totalPages);
     addToReady(pcb);
+    return pcb;
 }
 
 void scheduler() {
-    cpu = createCPU();
-    ReadyQueueNode* temp;
-    while (isEmpty() == -1) {
-        temp = getNext();
-        cpu->IP = temp->pcb->PC;
-        if ((temp->pcb->PC)+2 > temp->pcb->end) {
-            cpu->quanta = 1;
-        }
-        run(cpu, l);
-        temp->pcb->PC = (cpu->IP) + 1;
-        if (cpu->IP != temp->pcb->end) {
-            addToReady(temp->pcb);
-        } else {
-            free(temp->pcb);
-        }
-    }
-    cleanRam();
+    printf("Scheduler() in maintenance.\n");
+    // cpu = createCPU();
+    // ReadyQueueNode* temp;
+    // while (isEmpty() == -1) {
+    //     temp = getNext();
+    //     cpu->IP = temp->pcb->PC;
+    //     if ((temp->pcb->PC)+2 > temp->pcb->end) {
+    //         cpu->quanta = 1;
+    //     }
+    //     run(cpu, l);
+    //     temp->pcb->PC = (cpu->IP) + 1;
+    //     if (cpu->IP != temp->pcb->end) {
+    //         addToReady(temp->pcb);
+    //     } else {
+    //         free(temp->pcb);
+    //     }
+    // }
+    // cleanRam();
 }
 
 void boot() {
     char command[50];
-    strcpy(command, "rm -rf BackingStore");
-    system(command);
-    strcpy(command, "mkdir BackingStore");
+    strcpy(command, "rm -rf BackingStore && mkdir BackingStore");
     system(command);
 }
 

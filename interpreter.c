@@ -183,7 +183,7 @@ int exec(char** parsedInput, int num_tokens, List *l) {
                 return -1;
             }
             int currRamIndex = getNextAvailableIndex();
-            if ((currRamIndex + numLines) >= 1000) {
+            if ((currRamIndex + numLines) >= 40) {
                 printf("Error: ram is full, exec command will be cancelled\n");
                 cleanRam();
                 return -1;
