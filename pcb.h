@@ -8,3 +8,7 @@ typedef struct PCB {
 
 PCB* makePCB(int start, int end);
 #endif
+
+extern void setPageTable(int pageNumber, int frameNumber);
+extern int doesExists(int frameNumber);
+extern void isAvailable(int pageNumber);

@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "kernel.h"
+#include "pcb.h"
 
 int countTotalPages(FILE *fp) {
     int count = 0;
@@ -19,8 +20,33 @@ int countTotalPages(FILE *fp) {
     return numPages;
 }
 
-void loadPage(int pageNumber, FILE* f, int frameNumber) {
+int findFrame() {
+    for (int i = 0; i < 10; i++) {
+        if (isAvailable(i) == 1) {
+            return i;
+        }
+    }
+    return -1;
+}
 
+int findVictim(PCB *p) {
+    int victimFrameNumber = rand() % (9 + 1 - 0) + 0;
+    if (doesExists(victimFrameNumber) == -1) {
+        while (doesExists(victimFrameNumber) != 1) {
+            victimFrameNumber = (victimFrameNumber + 1) % 10;
+        }
+    }
+    return victimFrameNumber;
+}
+
+void loadPage(int pageNumber, FILE* f, int frameNumber) {
+    int lineNumber = 4 * pageNumber;
+    int frameNumber = findFrame();
+    if (frameNumber == -1) {
+        frameNumber = findVictim(PCB *p); // TO FIGURE OUT
+    }
+    setPageTable(pageNumber,frameNumber);
+    // Iterate on range 4 starting at lineNumber to add 4 LOC to found frame in ram
 }
 
 int launcher(char* filename) {
