@@ -6,8 +6,9 @@ typedef struct PCB {
     int PC_offset;
     int pages_max;
     int pageTable[10];
+    FILE* filePtr;
 } PCB;
 
 PCB* makePCB(int pageNumber, int pageOffset, int totalPages);
-#endif
 extern int doesExists(int frameNumber, PCB *p);
+#endif

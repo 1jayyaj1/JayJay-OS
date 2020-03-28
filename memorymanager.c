@@ -74,6 +74,7 @@ int launcher(char* filename) {
     FILE* f2 = fopen(path, "rt");
     int totalPages = countTotalPages(f1);
     PCB* pcb = myinit(totalPages);
+    pcb->filePtr = f2;
     int frameNumber = findFrame();
     if (frameNumber == -1) {
         frameNumber = findVictim(pcb);

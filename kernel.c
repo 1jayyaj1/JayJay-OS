@@ -79,25 +79,53 @@ PCB* myinit(int totalPages) {
     return pcb;
 }
 
+int interrupt(CPU* cpu, PCB* pcb) {
+    int nextPage = (pcb->PC_page)++;
+    if (nextPage > pcb->pages_max) {
+        return -1;
+    } else {
+        int frameNumber;
+        if (pcb->pageTable[nextPage] != -1) {
+            frameNumber = pcb->pageTable[nextPage];
+        } else {
+            int frameNumber = findFrame();
+            if (frameNumber == -1) {
+                frameNumber = findVictim(pcb);
+                updatePageTable(pcb, nextPage, frameNumber, frameNumber);
+            }
+            updatePageTable(pcb, nextPage, frameNumber, frameNumber);
+            loadPage(nextPage, pcb->filePtr, frameNumber);
+        }
+        pcb->PC_page = nextPage;
+        pcb->PC = frameNumber * 4;
+        pcb->PC_offset = 0;
+    }
+    return 0;
+}
+
 void scheduler() {
-    printf("Scheduler() in maintenance.\n");
-    // cpu = createCPU();
-    // ReadyQueueNode* temp;
-    // while (isEmpty() == -1) {
-    //     temp = getNext();
-    //     cpu->IP = temp->pcb->PC;
-    //     if ((temp->pcb->PC)+2 > temp->pcb->end) {
-    //         cpu->quanta = 1;
-    //     }
-    //     run(cpu, l);
-    //     temp->pcb->PC = (cpu->IP) + 1;
-    //     if (cpu->IP != temp->pcb->end) {
-    //         addToReady(temp->pcb);
-    //     } else {
-    //         free(temp->pcb);
-    //     }
-    // }
-    // cleanRam();
+    cpu = createCPU();
+    ReadyQueueNode* temp;
+    int processComplete = 0;
+    while (isEmpty() == -1) {
+        temp = getNext();
+        cpu->IP = temp->pcb->PC_page;
+        cpu->offset = temp->pcb->PC_offset;
+        if ((temp->pcb->PC_offset)+2 > 3) {
+            cpu->quanta = 1;
+            run(cpu, l);
+            processComplete = interrupt(cpu, temp->pcb);
+        } else {
+            run(cpu, l);
+            temp->pcb->PC_offset = cpu->offset;
+        }
+        if (processComplete == -1) {
+            free(temp->pcb);
+        } else {
+            addToReady(temp->pcb);
+        }
+    }
+    cleanRam();
 }
 
 void boot() {
